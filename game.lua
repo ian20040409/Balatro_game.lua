@@ -625,9 +625,9 @@ function Game:init_item_prototypes()
 
         --Backs
 
-        b_red=              {name = "Red Deck",         stake = 1, unlocked = true,order = 1, pos =   {x=0,y=0}, set = "Back", config = {discards = 1}, discovered = true},
-        b_blue=             {name = "Blue Deck",        stake = 1, unlocked = false,order = 2, pos =  {x=0,y=2}, set = "Back", config = {hands = 1}, unlock_condition = {type = 'discover_amount', amount = 20}},
-        b_yellow=           {name = "Yellow Deck",      stake = 1, unlocked = false,order = 3, pos =  {x=1,y=2}, set = "Back", config = {dollars = 10}, unlock_condition = {type = 'discover_amount', amount = 50}},
+        b_red=              {name = "Red Deck",         stake = 1, unlocked = true,order = 1, pos =   {x=0,y=0}, set = "Back", config = {discards = 11}, discovered = true},
+        b_blue=             {name = "Blue Deck",        stake = 1, unlocked = false,order = 2, pos =  {x=0,y=2}, set = "Back", config = {hands = 4}, unlock_condition = {type = 'discover_amount', amount = 20}},
+        b_yellow=           {name = "Yellow Deck",      stake = 1, unlocked = false,order = 3, pos =  {x=1,y=2}, set = "Back", config = {dollars = 1000}, unlock_condition = {type = 'discover_amount', amount = 50}},
         b_green=            {name = "Green Deck",       stake = 1, unlocked = false,order = 4, pos =  {x=2,y=2}, set = "Back", config = {extra_hand_bonus = 2, extra_discard_bonus = 1, no_interest = true}, unlock_condition = {type = 'discover_amount', amount = 75}},
         b_black=            {name = "Black Deck",       stake = 1, unlocked = false,order = 5, pos =  {x=3,y=2}, set = "Back", config = {hands = -1, joker_slot = 1}, unlock_condition = {type = 'discover_amount', amount = 100}},
         b_magic=            {name = "Magic Deck",       stake = 1, unlocked = false,order = 6, pos =  {x=0,y=3}, set = "Back", config = {voucher = 'v_crystal_ball', consumables = {'c_fool', 'c_fool'}}, unlock_condition = {type = 'win_deck', deck = 'b_red'}},
@@ -1881,8 +1881,12 @@ function Game:init_game_object()
         consumeable_usage = {},
         hand_usage = {},
         last_tarot_planet = nil,
-        win_ante = 5,
-        stake = 1,
+        
+
+	win_ante = 5,
+	
+        
+	stake = 1,
         modifiers = {},
         starting_params = get_starting_params(),
         banned_keys = {},
@@ -1998,19 +2002,27 @@ function Game:init_game_object()
             ['Queen'] = {suits = {}, total = 0},
             ['King'] = {suits = {}, total = 0},
         },
-        hands = {
-            ["Flush Five"] =        {visible = false,   order = 1, mult = 16,  chips = 160, s_mult = 16,  s_chips = 160, level = 1, l_mult = 3, l_chips = 50, played = 0, played_this_round = 0, example = {{'S_A', true},{'S_A', true},{'S_A', true},{'S_A', true},{'S_A', true}}},
-            ["Flush House"] =       {visible = false,   order = 2, mult = 14,  chips = 140, s_mult = 14,  s_chips = 140, level = 1, l_mult = 4, l_chips = 40, played = 0, played_this_round = 0, example = {{'D_7', true},{'D_7', true},{'D_7', true},{'D_4', true},{'D_4', true}}},
-            ["Five of a Kind"] =    {visible = false,   order = 3, mult = 12,  chips = 120, s_mult = 12,  s_chips = 120, level = 1, l_mult = 3, l_chips = 35, played = 0, played_this_round = 0, example = {{'S_A', true},{'H_A', true},{'H_A', true},{'C_A', true},{'D_A', true}}},
-            ["Straight Flush"] =    {visible = true,    order = 4, mult = 8,   chips = 100, s_mult = 8,   s_chips = 100, level = 1, l_mult = 4, l_chips = 40, played = 0, played_this_round = 0, example = {{'S_Q', true},{'S_J', true},{'S_T', true},{'S_9', true},{'S_8', true}}},
-            ["Four of a Kind"] =    {visible = true,    order = 5, mult = 7,   chips = 60,  s_mult = 7,   s_chips = 60,  level = 1, l_mult = 3, l_chips = 30, played = 0, played_this_round = 0, example = {{'S_J', true},{'H_J', true},{'C_J', true},{'D_J', true},{'C_3', false}}},
-            ["Full House"] =        {visible = true,    order = 6, mult = 4,   chips = 40,  s_mult = 4,   s_chips = 40,  level = 1, l_mult = 2, l_chips = 25, played = 0, played_this_round = 0, example = {{'H_K', true},{'C_K', true},{'D_K', true},{'S_2', true},{'D_2', true}}},
-            ["Flush"] =             {visible = true,    order = 7, mult = 4,   chips = 35,  s_mult = 4,   s_chips = 35,  level = 1, l_mult = 2, l_chips = 15, played = 0, played_this_round = 0, example = {{'H_A', true},{'H_K', true},{'H_T', true},{'H_5', true},{'H_4', true}}},
-            ["Straight"] =          {visible = true,    order = 8, mult = 4,   chips = 30,  s_mult = 4,   s_chips = 30,  level = 1, l_mult = 3, l_chips = 30, played = 0, played_this_round = 0, example = {{'D_J', true},{'C_T', true},{'C_9', true},{'S_8', true},{'H_7', true}}},
-            ["Three of a Kind"] =   {visible = true,    order = 9, mult = 3,   chips = 30,  s_mult = 3,   s_chips = 30,  level = 1, l_mult = 2, l_chips = 20, played = 0, played_this_round = 0, example = {{'S_T', true},{'C_T', true},{'D_T', true},{'H_6', false},{'D_5', false}}},
-            ["Two Pair"] =          {visible = true,    order = 10,mult = 2,   chips = 20,  s_mult = 2,   s_chips = 20,  level = 1, l_mult = 1, l_chips = 20, played = 0, played_this_round = 0, example = {{'H_A', true},{'D_A', true},{'C_Q', false},{'H_4', true},{'C_4', true}}},
-            ["Pair"] =              {visible = true,    order = 11,mult = 2,   chips = 10,  s_mult = 2,   s_chips = 10,  level = 1, l_mult = 1, l_chips = 15, played = 0, played_this_round = 0, example = {{'S_K', false},{'S_9', true},{'D_9', true},{'H_6', false},{'D_3', false}}},
-            ["High Card"] =         {visible = true,    order = 12,mult = 1,   chips = 5,   s_mult = 1,   s_chips = 5,   level = 1, l_mult = 1, l_chips = 10, played = 0, played_this_round = 0, example = {{'S_A', true},{'D_Q', false},{'D_9', false},{'C_4', false},{'D_3', false}}},
+
+hands = {
+            -- 隱藏牌型：穩贏數值，打出來直接破千萬分，無視任何盲注
+            ["Flush Five"] =        {visible = false,   order = 1, mult = 2000, chips = 20000, s_mult = 2000, s_chips = 20000, level = 1, l_mult = 500, l_chips = 5000, played = 0, played_this_round = 0, example = {{'S_A', true},{'S_A', true},{'S_A', true},{'S_A', true},{'S_A', true}}},
+            ["Flush House"] =       {visible = false,   order = 2, mult = 1500, chips = 15000, s_mult = 1500, s_chips = 15000, level = 1, l_mult = 400, l_chips = 4000, played = 0, played_this_round = 0, example = {{'D_7', true},{'D_7', true},{'D_7', true},{'D_4', true},{'D_4', true}}},
+            ["Five of a Kind"] =    {visible = false,   order = 3, mult = 1000, chips = 10000, s_mult = 1000, s_chips = 10000, level = 1, l_mult = 300, l_chips = 3000, played = 0, played_this_round = 0, example = {{'S_A', true},{'H_A', true},{'H_A', true},{'C_A', true},{'D_A', true}}},
+
+            -- 高階牌型：原版基礎分數 +1，升級增幅 (l_mult, l_chips) 比原版更強
+            ["Straight Flush"] =    {visible = true,    order = 4, mult = 9,   chips = 110, s_mult = 9,   s_chips = 110, level = 1, l_mult = 6, l_chips = 60, played = 0, played_this_round = 0, example = {{'S_Q', true},{'S_J', true},{'S_T', true},{'S_9', true},{'S_8', true}}},
+            ["Four of a Kind"] =    {visible = true,    order = 5, mult = 8,   chips = 70,  s_mult = 8,   s_chips = 70,  level = 1, l_mult = 5, l_chips = 45, played = 0, played_this_round = 0, example = {{'S_J', true},{'H_J', true},{'C_J', true},{'D_J', true},{'C_3', false}}},
+
+            -- 中階牌型：原版基礎分數 +1，升級增幅 (l_mult, l_chips) 比原版更強
+            ["Full House"] =        {visible = true,    order = 6, mult = 5,   chips = 50,  s_mult = 5,   s_chips = 50,  level = 1, l_mult = 3, l_chips = 35, played = 0, played_this_round = 0, example = {{'H_K', true},{'C_K', true},{'D_K', true},{'S_2', true},{'D_2', true}}},
+            ["Flush"] =             {visible = true,    order = 7, mult = 5,   chips = 45,  s_mult = 5,   s_chips = 45,  level = 1, l_mult = 3, l_chips = 25, played = 0, played_this_round = 0, example = {{'H_A', true},{'H_K', true},{'H_T', true},{'H_5', true},{'H_4', true}}},
+            ["Straight"] =          {visible = true,    order = 8, mult = 5,   chips = 40,  s_mult = 5,   s_chips = 40,  level = 1, l_mult = 4, l_chips = 35, played = 0, played_this_round = 0, example = {{'D_J', true},{'C_T', true},{'C_9', true},{'S_8', true},{'H_7', true}}},
+            ["Three of a Kind"] =   {visible = true,    order = 9, mult = 4,   chips = 40,  s_mult = 4,   s_chips = 40,  level = 1, l_mult = 3, l_chips = 25, played = 0, played_this_round = 0, example = {{'S_T', true},{'C_T', true},{'D_T', true},{'H_6', false},{'D_5', false}}},
+
+            -- 低階牌型：原版基礎分數 +1，升級增幅 (l_mult, l_chips) 比原版更強
+            ["Two Pair"] =          {visible = true,    order = 10,mult = 3,   chips = 30,  s_mult = 3,   s_chips = 30,  level = 1, l_mult = 2, l_chips = 25, played = 0, played_this_round = 0, example = {{'H_A', true},{'D_A', true},{'C_Q', false},{'H_4', true},{'C_4', true}}},
+            ["Pair"] =              {visible = true,    order = 11,mult = 3,   chips = 20,  s_mult = 3,   s_chips = 20,  level = 1, l_mult = 2, l_chips = 20, played = 0, played_this_round = 0, example = {{'S_K', false},{'S_9', true},{'D_9', true},{'H_6', false},{'D_3', false}}},
+            ["High Card"] =         {visible = true,    order = 12,mult = 2,   chips = 15,  s_mult = 2,   s_chips = 15,  level = 1, l_mult = 2, l_chips = 15, played = 0, played_this_round = 0, example = {{'S_A', true},{'D_Q', false},{'D_9', false},{'C_4', false},{'D_3', false}}},
         }
     }
 end
@@ -2152,7 +2164,8 @@ function Game:start_run(args)
         self.GAME.round_resets.discards = self.GAME.starting_params.discards
         self.GAME.round_resets.reroll_cost = self.GAME.starting_params.reroll_cost
         self.GAME.dollars = self.GAME.starting_params.dollars
-        self.GAME.base_reroll_cost = -100
+
+        self.GAME.base_reroll_cost = -111
         self.GAME.round_resets.reroll_cost = self.GAME.base_reroll_cost
         self.GAME.current_round.reroll_cost = self.GAME.base_reroll_cost
     end
@@ -2236,13 +2249,13 @@ function Game:start_run(args)
         0, 0,
         CAI.consumeable_W,
         CAI.consumeable_H, 
-        {card_limit = self.GAME.starting_params.consumable_slots, type = 'joker', highlight_limit = 1})
+        {card_limit = 8, type = 'joker', highlight_limit = 1})
 
     self.jokers = CardArea(
         0, 0,
         CAI.joker_W,
         CAI.joker_H, 
-        {card_limit = self.GAME.starting_params.joker_slots, type = 'joker', highlight_limit = 1})
+        {card_limit = 11, type = 'joker', highlight_limit = 1})
 
     self.discard = CardArea(
         0, 0,
